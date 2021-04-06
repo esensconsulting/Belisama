@@ -8,10 +8,15 @@
       "main": "src/backend/stock.mo",
       "type": "motoko"
     },
+    "belisama": {
+      "main": "src/backend/belisama.mo",
+      "type": "motoko"
+    },
     "frontend": {
       "dependencies": [
         "main",
-        "stock"
+        "stock",
+        "belisama"
       ],
       "frontend": {
         "entrypoint": "src/frontend/public/index.js",

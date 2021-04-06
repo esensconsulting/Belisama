@@ -4,7 +4,7 @@
       href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css"
       rel="stylesheet"
     />
-    {{ principal }} {{ role }}
+    
     <v-navigation-drawer app>
       <!-- -->
     </v-navigation-drawer>
@@ -27,6 +27,7 @@
     <v-main>
       <!-- Provides the application the proper gutter -->
       <v-container fluid>
+        {{ principal }} {{ role }} {{ belisama }}
         <!-- If using vue-router -->
         <!-- <router-view></router-view> -->
         <v-form ref="form" @submit.prevent="createItem">
@@ -86,7 +87,8 @@
             </v-icon>
           </template>
         </v-data-table>
-        <loan-log />
+        <!-- <loan-log /> -->
+        <copro />
       </v-container>
     </v-main>
 
@@ -100,13 +102,19 @@
 import frontend from "ic:canisters/frontend";
 import stock from "ic:canisters/stock";
 import auth from "ic:canisters/main";
-import LoanLog from "./LoanLog.vue";
+import belisama from "ic:canisters/belisama";
+// import LoanLog from "./LoanLog.vue";
+import Copro from "./copro/Copro.vue";
 
 export default {
-  components: { LoanLog },
+  components: { 
+    // LoanLog, 
+    Copro 
+  },
   data: () => {
     return {
       principal: "",
+      belisama: "",
       role: "",
       name: "",
       description: "",
@@ -142,6 +150,7 @@ export default {
     auth.my_role().then((role) => {
       this.role = Object.keys(role[0])[0];
     });
+    belisama.getName().then(message => this.belisama = message);
   },
   methods: {
     createItem() {
