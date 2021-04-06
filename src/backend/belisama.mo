@@ -7,23 +7,13 @@ import Nat "mo:base/Nat";
 import Option "mo:base/Option";
 import Principal "mo:base/Principal";
 import Time "mo:base/Time";
+import CoproModule "./copro";
 
 actor Belisama {
-    func isEqPrincipal(x: Principal, y: Principal): Bool {
-        Principal.equal(x, y);
-    };
-    func isEq(x: Nat, y: Nat): Bool {
-        x == y;
-    };
-
-    public type CoproId = Nat;
-    public type Copro = {
-        coproId: CoproId;
-        address: Text;
-    };
-    public type CreateCoproDto = {
-        address: Text;
-    };
+    public type CoproId = CoproModule.CoproId;
+    public type Copro = CoproModule.Copro;
+    public type CreateCoproDto = CoproModule.CreateCoproDto;
+    
     object coproCounter {
         var count = 0;
         public func inc() { count += 1 };
@@ -34,8 +24,8 @@ actor Belisama {
         };
     };
 
-    let copros = HashMap.HashMap<CoproId, Copro>(1, isEq, Hash.hash);
-    let coprosMembership = HashMap.HashMap<Principal, Copro>(1, isEqPrincipal, Principal.hash);
+    let copros = HashMap.HashMap<CoproId, Copro>(1, CoproModule.isEq, Hash.hash);
+    let coprosMembership = HashMap.HashMap<Principal, Copro>(1, CoproModule.isEqPrincipal, Principal.hash);
 
     public query func getName(): async Text {
         return "Hi Belisama"
@@ -43,7 +33,6 @@ actor Belisama {
 
     public shared func createCopro(copro: CreateCoproDto) {
         let id = coproCounter.bump();
-
         copros.put(id, {
             coproId= id;
             address= copro.address;
@@ -73,7 +62,6 @@ actor Belisama {
             };
             case (?(result)) {
                 coprosMembership.put(caller, result);
-                
                 "Joind Copro " # Nat.toText(id) # "."
             }
         };
