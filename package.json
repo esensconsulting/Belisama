@@ -8,7 +8,7 @@
     "start": "npm run build && NODE_ENV=development webpack-dev-server --open"
   },
   "devDependencies": {
-    "@dfinity/agent": "0.6.13",
+    "@dfinity/agent": "^0.6.28",
     "copy-webpack-plugin": "^6.0.3",
     "css-loader": "^5.0.1",
     "style-loader": "^2.0.0",

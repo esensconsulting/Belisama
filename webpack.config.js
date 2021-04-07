@@ -26,6 +26,8 @@ const aliases = Object.entries(dfxJson.canisters).reduce(
       ...acc,
       ["ic:canisters/" + name]: path.join(outputRoot, name + ".js"),
       ["ic:idl/" + name]: path.join(outputRoot, name + ".did.js"),
+      ["dfx-generated/" + name]: path.join(outputRoot, name + ".js"),
+      ["dfx-generated/" + name]: path.join(outputRoot, name + ".did.js"),
     };
   },
   {}
@@ -47,7 +49,7 @@ function generateWebpackConfigForCanister(name, info) {
     // devtool: isDevelopment ? "cheap-module-source-map" : "source-map",
     optimization: {
       minimize: !isDevelopment,
-      minimizer: [new TerserPlugin()]
+      minimizer: [new TerserPlugin({ extractComments: false })]
     },
 
     

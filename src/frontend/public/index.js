@@ -3,12 +3,12 @@ import Vuetify from "vuetify";
 import "vuetify/dist/vuetify.min.css";
 import Router from "vue-router";
 
-if (process.env.NODE_ENV === "development") {
-  if (!window.ic) {
-    const { HttpAgent, IDL } = require("@dfinity/agent");
-    const createAgent = require("./createAgent").default;
-    window.ic = { agent: createAgent(), HttpAgent, IDL };
-  }
+// if (process.env.NODE_ENV === "development") {
+//   if (!window.ic) {
+//     const { HttpAgent, IDL } = require("@dfinity/agent");
+//     const createAgent = require("./createAgent").default;
+//     window.ic = { agent: createAgent(), HttpAgent, IDL };
+//   }
 
   if (!document.getElementById("app")) {
     document.write('<div id="app"></div>');
@@ -16,29 +16,29 @@ if (process.env.NODE_ENV === "development") {
     container.id = "app";
     document.body.appendChild(container);
   }
-}
+// }
 
 const App = require("./App.vue").default;
-const Home = require("./views/Home.vue").default;
-const Copro = require("./views/Copro.vue").default;
-const Other = require("./views/Other.vue").default;
+// const Home = require("./views/Home.vue").default;
+// const Copro = require("./views/Copro.vue").default;
+// const Other = require("./views/Other.vue").default;
 const router = new Router({
   routes: [
-    {
-      path: "/",
-      name: "Home",
-      component: Home,
-    },
-    {
-      path: "/copro",
-      name: "copro",
-      component: Copro,
-    },
-    {
-      path: "/other",
-      name: "other",
-      component: Other,
-    },
+    // {
+    //   path: "/",
+    //   name: "Home",
+    //   component: Home,
+    // },
+    // {
+    //   path: "/copro",
+    //   name: "copro",
+    //   component: Copro,
+    // },
+    // {
+    //   path: "/other",
+    //   name: "other",
+    //   component: Other,
+    // },
   ],
 });
 

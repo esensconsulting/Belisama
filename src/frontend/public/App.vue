@@ -10,7 +10,7 @@
         ><v-img
           contain
           class="mx-2"
-          :src="logoImgSrc"
+          src="/assets/logo-belisama.png"
           max-height="50"
           max-width="200"
           alt="Belisama"
@@ -31,11 +31,14 @@
 </template>
 
 <script>
-import frontend from "ic:canisters/frontend";
-import stock from "ic:canisters/stock";
-import auth from "ic:canisters/main";
-import belisama from "ic:canisters/belisama";
+// import frontend from "ic:canisters/frontend";
+// import stock from "ic:canisters/stock";
+// import auth from "ic:canisters/main";
+// import belisama from "./actors/belisama";
+
 import Nav from "./components/Nav.vue";
+import actor from "./actors/belisama";
+
 
 export default {
   components: {
@@ -57,22 +60,28 @@ export default {
     };
   },
 
-  beforeCreate() {},
+  beforeCreate() {
+    
+  },
   created() {
-    frontend.retrieve("logo-belisama.png").then((bytes) => {
-      this.logoImgSrc = URL.createObjectURL(
-        new Blob([new Uint8Array(bytes)], {
-          type: "image/png",
-        })
-      );
-    });
-    auth.callerPrincipal().then((principal) => {
-      this.principal = principal;
-    });
-    auth.my_role().then((role) => {
-      this.role = Object.keys(role[0])[0];
-    });
-    belisama.getName().then((message) => (this.belisama = message));
+    // frontend.retrieve("logo-belisama.png").then((bytes) => {
+    //   this.logoImgSrc = URL.createObjectURL(
+    //     new Blob([new Uint8Array(bytes)], {
+    //       type: "image/png",
+    //     })
+    //   );
+    // });
+    // auth.callerPrincipal().then((principal) => {
+    //   this.principal = principal;
+    // });
+    // auth.my_role().then((role) => {
+    //   this.role = Object.keys(role[0])[0];
+    // });
+
+    actor.getName().then((message) => (this.belisama = message));
+  
+    
+    
   },
   methods: {},
 };
