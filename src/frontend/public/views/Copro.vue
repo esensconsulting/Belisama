@@ -73,7 +73,6 @@ export default {
     this.timeout = setTimeout(() => this.recursiveGetAllItems(), 5000);
   },
   unmounted() {
-    console.log("test");
     clearTimeout(this.timeout);
   },
   methods: {
