@@ -10,6 +10,7 @@ import Time "mo:base/Time";
 import CoproModule "./copro";
 import PollModule "./poll";
 import Result "mo:base/Result";
+import Debug "mo:base/Debug";
 
 actor Belisama {
     public type CoproId = CoproModule.CoproId;
@@ -55,6 +56,8 @@ actor Belisama {
     let coprosMembership = HashMap.HashMap<Principal, Copro>(1, CoproModule.isEqPrincipal, Principal.hash);
 
     let polls = HashMap.HashMap<PollId, Poll>(1, PollModule.isEq, Hash.hash);
+    let pollsByCoproId = HashMap.HashMap<CoproId, List.List<PollId>>(1, PollModule.isEq, Hash.hash);
+
     let proposals = HashMap.HashMap<ProposalId, Proposal>(1, PollModule.isEq, Hash.hash);
     let pollProposals = HashMap.HashMap<PollId, List.List<ProposalId>>(1, PollModule.isEq, Hash.hash);
 
@@ -70,6 +73,7 @@ actor Belisama {
         };
         copros.put(id, newCopro);
         coprosMembership.put(caller, newCopro);
+        pollsByCoproId.put(id, List.nil<PollId>());
     };
 
     public query func getAllCopros(): async [Copro] {
@@ -133,6 +137,10 @@ actor Belisama {
                     description = poll.description;
                 });
                 pollProposals.put(id, List.nil<ProposalId>());
+
+                var currentPollsByCoproId:?List.List<PollId> = pollsByCoproId.get(copro.coproId);
+                let pollAdded = List.push(id, Option.unwrap(currentPollsByCoproId));
+                pollsByCoproId.put(copro.coproId, pollAdded);
                 "Poll " # Nat.toText(id) # " created."
             }
         };
@@ -159,5 +167,24 @@ actor Belisama {
             }
         };
     };
-    
+
+    public query ({ caller }) func getMyPolls(): async [Poll] {
+        switch(coprosMembership.get(caller)) {
+            case null {
+                // "You are not in a copro."
+                []
+            };
+            case (?(result)) {
+                let copro: Copro = result;
+                var myPolls: [Poll] = [];
+                var pollIds: [PollId] = List.toArray<PollId>(Option.unwrap(pollsByCoproId.get(copro.coproId)));
+                for(id in Array.vals(pollIds)){
+                    let poll = polls.get(id);
+                    myPolls := Array.append<Poll>(myPolls,[Option.unwrap(poll)]);
+                };
+                myPolls
+            }
+        };
+    };
+
 };
