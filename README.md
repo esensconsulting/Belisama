@@ -36,7 +36,7 @@ Doc du readme : https://github.com/othneildrew/Best-README-Template
 <br />
 <p align="center">
   <a href="https://github.com/esensconsulting/Belisama">
-    <img src="src/frontend/assets/Belisama-rose.png" alt="Logo"  height="80">
+    <img src="src/frontend/assets/logo-belisama.png" alt="Logo"  height="80">
   </a>
 
   <h3 align="center">Belisama</h3>
