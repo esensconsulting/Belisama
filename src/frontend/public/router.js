@@ -1,5 +1,8 @@
 import Vue from "vue";
 import Router from "vue-router";
+import Home from "./views/Home.vue";
+import Copro from "./views/Copro.vue";
+import Other from "./views/Other.vue";
 
 Vue.use(Router);
 
@@ -8,17 +11,17 @@ export default new Router({
     {
       path: "/",
       name: "Home",
-      component: () => import("./views/Home.vue"),
+      component: Home,
     },
     {
       path: "/copro",
       name: "copro",
-      component: () => import("./views/Copro.vue"),
+      component: Copro,
     },
     {
       path: "/other",
       name: "other",
-      component: () => import("./views/Other.vue"),
+      component: Other,
     },
   ],
 });
