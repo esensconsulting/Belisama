@@ -87,13 +87,6 @@ export default {
   },
   beforeCreate() {},
   created() {
-    frontend.retrieve("Belisama-rose.png").then((bytes) => {
-      this.logoImgSrc = URL.createObjectURL(
-        new Blob([new Uint8Array(bytes)], {
-          type: "image/png",
-        })
-      );
-    });
     this.busy = true;
     this.getAllItems();
   },
