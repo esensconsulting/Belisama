@@ -70,10 +70,10 @@ export default {
   created() {},
   mounted() {
     this.recursiveGetAllItems();
-    this.timeout = setTimeout(() => this.recursiveGetAllItems(), 5000);
+    this.timeout = setInterval(() => this.recursiveGetAllItems(), 5000);
   },
   unmounted() {
-    clearTimeout(this.timeout);
+    clearInterval(this.timeout);
   },
   methods: {
     createCopro() {
