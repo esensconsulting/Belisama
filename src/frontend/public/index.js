@@ -1,12 +1,13 @@
-import Vue from 'vue'
-import Vuetify from 'vuetify'
-import 'vuetify/dist/vuetify.min.css'
+import Vue from "vue";
+import Vuetify from "vuetify";
+import "vuetify/dist/vuetify.min.css";
+import router from "./router";
 
 if (process.env.NODE_ENV === "development") {
-  if (!(window).ic) {
+  if (!window.ic) {
     const { HttpAgent, IDL } = require("@dfinity/agent");
     const createAgent = require("./createAgent").default;
-    (window).ic = { agent: createAgent(), HttpAgent, IDL };
+    window.ic = { agent: createAgent(), HttpAgent, IDL };
   }
 
   if (!document.getElementById("app")) {
@@ -17,12 +18,11 @@ if (process.env.NODE_ENV === "development") {
   }
 }
 
-
-Vue.use(Vuetify)
+Vue.use(Vuetify);
 const App = require("./App.vue").default;
 
-
 new Vue({
+  router,
   vuetify: new Vuetify({}),
-  render: (h) => h(App)
-}).$mount('#app')
+  render: (h) => h(App),
+}).$mount("#app");
