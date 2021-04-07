@@ -69,6 +69,7 @@ export default {
   },
   created() {},
   mounted() {
+    this.recursiveGetAllItems();
     this.timeout = setTimeout(() => this.recursiveGetAllItems(), 5000);
   },
   unmounted() {
