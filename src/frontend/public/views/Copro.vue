@@ -14,7 +14,11 @@
         <v-container>
           <v-row>
             <v-col cols="12" md="4">
-              <v-text-field v-model="address" label="address" required></v-text-field>
+              <v-text-field
+                v-model="address"
+                label="address"
+                required
+              ></v-text-field>
             </v-col>
             <v-col cols="12" md="4">
               <v-btn type="submit" color="primary" :disabled="busy">
@@ -53,6 +57,7 @@ import belisama from "ic:canisters/belisama";
 export default {
   data: () => {
     return {
+      timeout: null,
       items: [],
       headers: [
         { text: "Id", value: "coproId" },
@@ -65,6 +70,11 @@ export default {
   created() {},
   mounted() {
     this.recursiveGetAllItems();
+    this.timeout = setInterval(() => this.recursiveGetAllItems(), 5000);
+  },
+  beforeRouteLeave(to, from, next) {
+    clearInterval(this.timeout);
+    next();
   },
   methods: {
     createCopro() {
@@ -74,7 +84,6 @@ export default {
     recursiveGetAllItems() {
       this.busy = true;
       this.getAllCopros();
-      setTimeout(() => this.recursiveGetAllItems(), 5000);
     },
     getAllCopros() {
       belisama.getAllCopros().then((items) => {

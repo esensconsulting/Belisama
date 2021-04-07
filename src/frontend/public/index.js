@@ -1,12 +1,13 @@
-import Vue from 'vue'
-import Vuetify from 'vuetify'
-import 'vuetify/dist/vuetify.min.css'
+import Vue from "vue";
+import Vuetify from "vuetify";
+import "vuetify/dist/vuetify.min.css";
+import Router from "vue-router";
 
 if (process.env.NODE_ENV === "development") {
-  if (!(window).ic) {
+  if (!window.ic) {
     const { HttpAgent, IDL } = require("@dfinity/agent");
     const createAgent = require("./createAgent").default;
-    (window).ic = { agent: createAgent(), HttpAgent, IDL };
+    window.ic = { agent: createAgent(), HttpAgent, IDL };
   }
 
   if (!document.getElementById("app")) {
@@ -17,12 +18,35 @@ if (process.env.NODE_ENV === "development") {
   }
 }
 
-
-Vue.use(Vuetify)
 const App = require("./App.vue").default;
+const Home = require("./views/Home.vue").default;
+const Copro = require("./views/Copro.vue").default;
+const Other = require("./views/Other.vue").default;
+const router = new Router({
+  routes: [
+    {
+      path: "/",
+      name: "Home",
+      component: Home,
+    },
+    {
+      path: "/copro",
+      name: "copro",
+      component: Copro,
+    },
+    {
+      path: "/other",
+      name: "other",
+      component: Other,
+    },
+  ],
+});
 
+Vue.use(Vuetify);
+Vue.use(Router);
 
 new Vue({
+  router,
   vuetify: new Vuetify({}),
-  render: (h) => h(App)
-}).$mount('#app')
+  render: (h) => h(App),
+}).$mount("#app");
