@@ -72,8 +72,9 @@ export default {
     this.recursiveGetAllItems();
     this.timeout = setInterval(() => this.recursiveGetAllItems(), 5000);
   },
-  unmounted() {
+  beforeRouteLeave(to, from, next) {
     clearInterval(this.timeout);
+    next();
   },
   methods: {
     createCopro() {
