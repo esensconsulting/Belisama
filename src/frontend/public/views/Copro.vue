@@ -57,6 +57,7 @@ import belisama from "ic:canisters/belisama";
 export default {
   data: () => {
     return {
+      timeout: null,
       items: [],
       headers: [
         { text: "Id", value: "coproId" },
@@ -70,6 +71,9 @@ export default {
   mounted() {
     this.recursiveGetAllItems();
   },
+  beforeUnmount() {
+    clearTimeout(this.timeout);
+  },
   methods: {
     createCopro() {
       this.busy = true;
@@ -78,7 +82,7 @@ export default {
     recursiveGetAllItems() {
       this.busy = true;
       this.getAllCopros();
-      setTimeout(() => this.recursiveGetAllItems(), 5000);
+      this.timeout = setTimeout(() => this.recursiveGetAllItems(), 5000);
     },
     getAllCopros() {
       belisama.getAllCopros().then((items) => {
