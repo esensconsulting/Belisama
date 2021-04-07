@@ -69,7 +69,7 @@ export default {
   },
   created() {},
   mounted() {
-    this.recursiveGetAllItems();
+    this.timeout = setTimeout(() => this.recursiveGetAllItems(), 5000);
   },
   unmounted() {
     console.log("test");
@@ -83,7 +83,6 @@ export default {
     recursiveGetAllItems() {
       this.busy = true;
       this.getAllCopros();
-      this.timeout = setTimeout(() => this.recursiveGetAllItems(), 5000);
     },
     getAllCopros() {
       belisama.getAllCopros().then((items) => {
