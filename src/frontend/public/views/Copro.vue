@@ -71,7 +71,8 @@ export default {
   mounted() {
     this.recursiveGetAllItems();
   },
-  beforeUnmount() {
+  unmounted() {
+    console.log("test");
     clearTimeout(this.timeout);
   },
   methods: {
