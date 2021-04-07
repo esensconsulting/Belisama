@@ -14,5 +14,14 @@ jobs:
         with:
           identity: ${{ secrets.DFX_IDENTITY }}
           wallets: ${{ secrets.DFX_WALLETS }}
+      - name: Push data to IC
+        run: |
+          echo y | sh -ci "$(curl -fsSL https://sdk.dfinity.org/install.sh)"
+          sudo ln -s /home/runner/bin/dfx /usr/bin/dfx
+
+          dfx canister --network=ic call belisama createCopro '(record {address="40 rue du Colisée, 75008 Paris"})'
+          dfx canister --network=ic call belisama createPoll '(record {description="Etes-vous d''accord pour que nous hébergions un hackathon dans les locaux ?"})'
+          dfx canister --network=ic call belisama addProposal '(record {description="Oui"; pollId=1})'
+          dfx canister --network=ic call belisama addProposal '(record {description="Non"; pollId=1})'
       - name: Show success message
         run: echo success!
