@@ -21,7 +21,6 @@ if (process.env.NODE_ENV === "development") {
 const App = require("./App.vue").default;
 const Home = require("./views/Home.vue").default;
 const Copro = require("./views/Copro.vue").default;
-const Other = require("./views/Other.vue").default;
 const router = new Router({
   routes: [
     {
@@ -33,12 +32,7 @@ const router = new Router({
       path: "/copro",
       name: "copro",
       component: Copro,
-    },
-    {
-      path: "/other",
-      name: "other",
-      component: Other,
-    },
+    }
   ],
 });
 

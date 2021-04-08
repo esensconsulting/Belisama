@@ -28,11 +28,6 @@ export default {
       items: [
         { title: "Home", icon: "mdi-home", link: "/" },
         { title: "Copro", icon: "mdi-account-edit", link: "copro" },
-        {
-          title: "Other",
-          icon: "mdi-beer",
-          link: "other",
-        },
       ],
     };
   },

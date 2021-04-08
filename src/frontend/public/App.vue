@@ -32,8 +32,6 @@
 
 <script>
 import frontend from "ic:canisters/frontend";
-import stock from "ic:canisters/stock";
-import auth from "ic:canisters/main";
 import belisama from "ic:canisters/belisama";
 import Nav from "./components/Nav.vue";
 
@@ -46,13 +44,6 @@ export default {
       principal: "",
       belisama: "",
       role: "",
-      headers: [
-        { text: "Id", value: "id" },
-        { text: "Nom", value: "name" },
-        { text: "Description", value: "description" },
-        { text: "Emprunteur", value: "borrower" },
-        { text: "Actions", value: "actions", sortable: false },
-      ],
       logoImgSrc: "",
     };
   },
@@ -66,11 +57,8 @@ export default {
         })
       );
     });
-    auth.callerPrincipal().then((principal) => {
+    belisama.callerPrincipal().then((principal) => {
       this.principal = principal;
-    });
-    auth.my_role().then((role) => {
-      this.role = Object.keys(role[0])[0];
     });
     belisama.getName().then((message) => (this.belisama = message));
   },
