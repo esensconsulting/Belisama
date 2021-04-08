@@ -1,21 +1,11 @@
 {
   "canisters": {
-    "main": {
-      "main": "src/backend/main.mo",
-      "type": "motoko"
-    },
-    "stock": {
-      "main": "src/backend/stock.mo",
-      "type": "motoko"
-    },
     "belisama": {
       "main": "src/backend/belisama.mo",
       "type": "motoko"
     },
     "frontend": {
       "dependencies": [
-        "main",
-        "stock",
         "belisama"
       ],
       "frontend": {

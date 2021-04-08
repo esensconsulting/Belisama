@@ -11,6 +11,7 @@ import CoproModule "./copro";
 import PollModule "./poll";
 import Result "mo:base/Result";
 import Debug "mo:base/Debug";
+import Iter "mo:base/Iter";
 
 actor Belisama {
     public type CoproId = CoproModule.CoproId;
@@ -62,8 +63,13 @@ actor Belisama {
     let pollProposals = HashMap.HashMap<PollId, List.List<ProposalId>>(1, PollModule.isEq, Hash.hash);
 
     public query func getName(): async Text {
-        return "Hi Belisama"
+        return "Belisama"
     }; 
+
+    // Return the principal of the message caller/user identity
+    public query({ caller }) func callerPrincipal() : async Principal {
+        return caller;
+    };
 
     public shared ({ caller }) func createCopro(copro: CreateCoproDto) {
         let id = coproCounter.bump();
@@ -187,4 +193,37 @@ actor Belisama {
         };
     };
 
+    public query ({ caller }) func getProposalsByPollId(pollId: Nat): async Result.Result<[Proposal], Text> {
+        let myCopro: ?Copro = coprosMembership.get(caller);
+        let pollIds: ?List.List<PollId> = Option.map<Copro,List.List<PollId>>(
+            myCopro, 
+            func (currentCopro){
+                Option.get<List.List<PollId>>(pollsByCoproId.get(currentCopro.coproId), List.nil<PollId>());
+            }
+        );
+        switch(pollIds) {
+            case null {
+                #err("Poll doesn't exist.");
+            };
+            case (?(result)) {
+                var _proposals: [Proposal] = [];
+                let _currentPollId: ?PollId = List.find<PollId>(result, func id = id == pollId);
+                if(Option.isNull(_currentPollId)) {
+                    #err("Poll doesn't exist.");
+                } else {
+                    let _proposalIds: ?List.List<ProposalId> = Option.map<PollId,List.List<ProposalId>>(
+                        _currentPollId,
+                        func(pId) {
+                            Option.unwrap(pollProposals.get(pId));
+                        }
+                    );
+                    for(id in Iter.fromList<ProposalId>(Option.unwrap(_proposalIds))){
+                        let _proposal = proposals.get(id);
+                        _proposals := Array.append<Proposal>(_proposals,[Option.unwrap(_proposal)]);
+                    };
+                    #ok(_proposals);
+                }
+            };
+        };
+    };
 };
