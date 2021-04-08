@@ -9,3 +9,6 @@ dfx canister call belisama addProposal '(record {description="Oui"; pollId=1})'
 dfx canister call belisama addProposal '(record {description="Non"; pollId=1})'
 # echo On récupère les proposition de l enoncé de vote 
 dfx canister call belisama getProposalsByPollId '(1)'
+# echo On vote Oui 
+dfx canister call belisama vote '(1)'
+

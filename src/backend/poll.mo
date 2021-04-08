@@ -1,4 +1,5 @@
 import Principal "mo:base/Principal";
+import TrieSet "mo:base/TrieSet";
 import Time "mo:base/Time";
 
 module {
@@ -18,6 +19,7 @@ module {
         coproId: CoproId;
         ownerId: Principal;
         description: Text;
+        voters: TrieSet.Set<Principal>;
     };
     public type CreatePollDto = {
         description: Text;
@@ -27,6 +29,7 @@ module {
         pollId: PollId;
         description: Text;
         voteCount: Nat;
+        voters: TrieSet.Set<Principal>;
     };
     public type CreateProposalDto = {
         pollId: PollId;

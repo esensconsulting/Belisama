@@ -12,6 +12,7 @@ import PollModule "./poll";
 import Result "mo:base/Result";
 import Debug "mo:base/Debug";
 import Iter "mo:base/Iter";
+import TrieSet "mo:base/TrieSet";
 
 actor Belisama {
     public type CoproId = CoproModule.CoproId;
@@ -141,6 +142,7 @@ actor Belisama {
                     coproId = copro.coproId;
                     ownerId = caller;
                     description = poll.description;
+                    voters=TrieSet.empty<Principal>();
                 });
                 pollProposals.put(id, List.nil<ProposalId>());
 
@@ -165,6 +167,7 @@ actor Belisama {
                     pollId=poll.pollId;
                     description=proposal.description;
                     voteCount=0;
+                    voters= TrieSet.empty<Principal>();
                 });
                 var currentPollProposals:?List.List<ProposalId> = pollProposals.get(poll.pollId);
                 let proposalAdded = List.push(id, Option.unwrap(currentPollProposals));
@@ -224,6 +227,28 @@ actor Belisama {
                     #ok(_proposals);
                 }
             };
+        };
+    };
+
+    //////////////////////////////  Vote  /////////////////////////////////////
+    public shared ({ caller }) func vote(proposalId: Nat): async Result.Result<Text, Text> {
+        switch(proposals.get(proposalId)) {
+            case null {
+                #err("Proposal doesn't exist.")
+            };
+            case (?(proposal)) {
+                let newVoters : TrieSet.Set<Principal> = TrieSet.put<Principal>(proposal.voters, caller, Principal.hash(caller), Principal.equal);
+                let updatedProposal : Proposal = {
+                    proposalId=proposal.proposalId;
+                    pollId=proposal.proposalId;
+                    description=proposal.description;
+                    voteCount=TrieSet.size(newVoters);
+                    voters=newVoters;
+                };
+                proposals.put(proposalId, updatedProposal);
+                // @TODO rendre safe (un vote par poll)
+                #ok("Vote submitted");
+            }
         };
     };
 };
