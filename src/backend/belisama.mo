@@ -102,7 +102,7 @@ actor Belisama {
     public shared ({ caller }) func joinCopro(id: Nat): async Text {
         switch(getCoproById(id)) {
             case null {
-                "Copro " # Nat.toText(id) # " not found."
+                "not found"
             };
             case (?(result)) {
                 coprosMembership.put(caller, result);
