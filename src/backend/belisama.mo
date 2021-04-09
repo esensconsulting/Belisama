@@ -13,6 +13,7 @@ import Result "mo:base/Result";
 import Debug "mo:base/Debug";
 import Iter "mo:base/Iter";
 import TrieSet "mo:base/TrieSet";
+import Bool "mo:base/Bool";
 
 actor Belisama {
     public type CoproId = CoproModule.CoproId;
@@ -237,17 +238,32 @@ actor Belisama {
                 #err("Proposal doesn't exist.")
             };
             case (?(proposal)) {
-                let newVoters : TrieSet.Set<Principal> = TrieSet.put<Principal>(proposal.voters, caller, Principal.hash(caller), Principal.equal);
-                let updatedProposal : Proposal = {
-                    proposalId=proposal.proposalId;
-                    pollId=proposal.proposalId;
-                    description=proposal.description;
-                    voteCount=TrieSet.size(newVoters);
-                    voters=newVoters;
-                };
-                proposals.put(proposalId, updatedProposal);
-                // @TODO rendre safe (un vote par poll)
-                #ok("Vote submitted");
+                let poll: Poll = Option.unwrap(polls.get(proposal.pollId));
+                let alreadyVoted : Bool = Option.isSome(Array.find<Principal>(TrieSet.toArray(poll.voters), func uid = uid == caller));
+                if(alreadyVoted) {
+                    #err("You already voted on this poll.");
+                } else {
+                    let newProposalVoters : TrieSet.Set<Principal> = TrieSet.put<Principal>(proposal.voters, caller, Principal.hash(caller), Principal.equal);
+                    let updatedProposal : Proposal = {
+                        proposalId=proposal.proposalId;
+                        pollId=proposal.proposalId;
+                        description=proposal.description;
+                        voteCount=TrieSet.size(newProposalVoters);
+                        voters=newProposalVoters;
+                    };
+                    proposals.put(proposalId, updatedProposal);
+
+                    let newPollVoters : TrieSet.Set<Principal> = TrieSet.put<Principal>(poll.voters, caller, Principal.hash(caller), Principal.equal);
+                    let updatedPoll : Poll = {
+                        pollId=poll.pollId;
+                        coproId=poll.coproId;
+                        ownerId=poll.ownerId;
+                        description=poll.description;
+                        voters=newPollVoters;
+                    };
+                    polls.put(poll.pollId, updatedPoll);
+                    #ok("Vote submitted");
+                }
             }
         };
     };
