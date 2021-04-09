@@ -32,7 +32,7 @@ export default {
     joinCopro: function(copro) {
       console.log(copro);
       belisama.joinCopro(copro.coproId).then((data) => {
-        if (data != "not found") this.$router.push({ path: "home" });
+        if (data != "not found") this.$router.push({ path: "home/main" });
       });
     },
   },
