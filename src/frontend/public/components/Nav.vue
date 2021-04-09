@@ -1,5 +1,12 @@
+<style scoped>
+.belisima {
+  background-color: #cf0063;
+  background-image: linear-gradient(135deg, #dd1173, #350e47);
+}
+</style>
+
 <template>
-  <v-navigation-drawer class="pink darken-1" dark app>
+  <v-navigation-drawer class="pink darken-1 belisima" dark app>
     <v-list>
       <router-link
         style="text-decoration: none;"
@@ -26,8 +33,8 @@ export default {
   data() {
     return {
       items: [
-        { title: "Home", icon: "mdi-home", link: "/" },
-        { title: "Copro", icon: "mdi-account-edit", link: "copro" },
+        { title: "Home", icon: "mdi-home", link: "/home/main" },
+        { title: "Copro", icon: "mdi-account-edit", link: "/home/main" },
       ],
     };
   },

@@ -20,19 +20,28 @@ if (process.env.NODE_ENV === "development") {
 
 const App = require("./App.vue").default;
 const Home = require("./views/Home.vue").default;
-const Copro = require("./views/Copro.vue").default;
+const Info = require("./views/Information.vue").default;
+const Welcome = require("./views/Welcome.vue").default;
 const router = new Router({
   routes: [
     {
-      path: "/",
+      path: "/home",
       name: "Home",
       component: Home,
+      children: [
+        {
+          // `UserProfile` va être rendu à l'intérieur du `<router-view>` de `User`
+          // quand `/utilisateur/:id/profil` concorde
+          path: "main",
+          component: Info,
+        },
+      ],
     },
     {
-      path: "/copro",
-      name: "copro",
-      component: Copro,
-    }
+      path: "/",
+      name: "welcome",
+      component: Welcome,
+    },
   ],
 });
 

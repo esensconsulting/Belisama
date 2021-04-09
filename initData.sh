@@ -1,6 +1,9 @@
 #!/bin/bash
 # echo On créé une copro 
 dfx canister call belisama createCopro '(record {address="40 rue du Colisée, 75008 Paris"})'
+dfx canister call belisama createCopro '(record {address="30 rue du Colisée, 75008 Paris"})'
+dfx canister call belisama createCopro '(record {address="15 rue de la belle blanche, 94600 choisy-le-roi"})'
+dfx canister call belisama createCopro '(record {address="105 rue de garosh, 77120 coulommiers"})'
 # echo On créé un énoncé de vote
 dfx canister call belisama createPoll '(record {description="Etes-vous d''accord pour que nous hébergions un hackathon dans les locaux ?"})'
 # echo On rattache une proposition à l énoncé de vote 'Oui'
