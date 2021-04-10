@@ -24,7 +24,6 @@
 </template>
 
 <script>
-import frontend from "ic:canisters/frontend";
 import belisama from "ic:canisters/belisama";
 
 export default {
@@ -42,7 +41,6 @@ export default {
   methods: {
     vote: function(proposal) {
       this.loading = true;
-      console.log(proposal);
       belisama.vote(proposal.proposalId).then((data) => {
         this.getPolls();
       });
@@ -51,7 +49,6 @@ export default {
       belisama.callerPrincipal().then((principal) => {
         this.principal = principal;
         belisama.getMyPolls().then((data) => {
-          console.log(data);
           this.loading = false;
           this.pools = data;
         });
