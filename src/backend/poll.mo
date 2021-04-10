@@ -21,6 +21,14 @@ module {
         description: Text;
         voters: TrieSet.Set<Principal>;
     };
+    public type PollExtended = {
+        pollId: PollId;
+        coproId: CoproId;
+        ownerId: Principal;
+        description: Text;
+        voters: [Principal];
+        proposals: [Proposal];
+    };
     public type CreatePollDto = {
         description: Text;
     };
