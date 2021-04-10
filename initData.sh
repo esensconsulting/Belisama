@@ -12,10 +12,10 @@ dfx canister --network=$NETWORK call belisama createPoll '(record {description="
 dfx canister --network=$NETWORK call belisama addProposal '(record {description="Oui"; pollId=1})'
 # echo On rattache une proposition à l énoncé de vote 'Non'
 dfx canister --network=$NETWORK call belisama addProposal '(record {description="Non"; pollId=1})'
-# echo On récupère les proposition de l enoncé de vote 
-dfx canister --network=$NETWORK call belisama getProposalsByPollId '(1)'
 # echo On vote Oui 
 dfx canister --network=$NETWORK call belisama vote '(1)'
+# echo On récupère la liste des vote en cours
+dfx canister --network=$NETWORK call belisama getMyPolls
 
 dfx canister --network=$NETWORK call belisama createCopro '(record {address="30 rue du Colisée, 75008 Paris"})'
 dfx canister --network=$NETWORK call belisama createCopro '(record {address="15 rue de la belle blanche, 94600 choisy-le-roi"})'

@@ -23,6 +23,7 @@ actor Belisama {
     public type PollId = PollModule.PollId;
     public type ProposalId = PollModule.ProposalId;
     public type Poll = PollModule.Poll;
+    public type PollExtended = PollModule.PollExtended;
     public type Proposal = PollModule.Proposal;
     public type CreatePollDto = PollModule.CreatePollDto;
     public type CreateProposalDto = PollModule.CreateProposalDto;
@@ -113,27 +114,10 @@ actor Belisama {
     };
 
     //////////////////////////////  Polls  /////////////////////////////////////
-    //@Todo Delete this method
-    public query func getAllPolls(): async [Poll] {
-        var array: [Poll] = [];
-        for((id, item) in polls.entries()) {
-            array := Array.append<Poll>(array, [item]);
-        };
-        return array;
-    };
-    //@Todo Delete this method
-    public query func getAllProposals(): async [Proposal] {
-        var array: [Proposal] = [];
-        for((id, item) in proposals.entries()) {
-            array := Array.append<Proposal>(array, [item]);
-        };
-        return array;
-    };
-
-    public shared ({ caller }) func createPoll(poll: CreatePollDto): async Text {
+    public shared ({ caller }) func createPoll(poll: CreatePollDto): async Result.Result<Nat, Text> {
         switch(coprosMembership.get(caller)) {
             case null {
-                "You are not in a copro."
+                #err("You are not in a copro.");
             };
             case (?(result)) {
                 let id = pollCounter.bump();
@@ -150,7 +134,7 @@ actor Belisama {
                 var currentPollsByCoproId:?List.List<PollId> = pollsByCoproId.get(copro.coproId);
                 let pollAdded = List.push(id, Option.unwrap(currentPollsByCoproId));
                 pollsByCoproId.put(copro.coproId, pollAdded);
-                "Poll " # Nat.toText(id) # " created."
+                #ok(id);
             }
         };
     };
@@ -178,56 +162,38 @@ actor Belisama {
         };
     };
 
-    public query ({ caller }) func getMyPolls(): async [Poll] {
+    public query ({ caller }) func getMyPolls(): async [PollExtended] {
         switch(coprosMembership.get(caller)) {
             case null {
                 // "You are not in a copro."
                 []
             };
-            case (?(result)) {
-                let copro: Copro = result;
-                var myPolls: [Poll] = [];
+            case (?(copro)) {
+                var myPollsExtended: [PollExtended] = [];
                 var pollIds: [PollId] = List.toArray<PollId>(Option.unwrap(pollsByCoproId.get(copro.coproId)));
                 for(id in Array.vals(pollIds)){
-                    let poll = polls.get(id);
-                    myPolls := Array.append<Poll>(myPolls,[Option.unwrap(poll)]);
-                };
-                myPolls
-            }
-        };
-    };
-
-    public query ({ caller }) func getProposalsByPollId(pollId: Nat): async Result.Result<[Proposal], Text> {
-        let myCopro: ?Copro = coprosMembership.get(caller);
-        let pollIds: ?List.List<PollId> = Option.map<Copro,List.List<PollId>>(
-            myCopro, 
-            func (currentCopro){
-                Option.get<List.List<PollId>>(pollsByCoproId.get(currentCopro.coproId), List.nil<PollId>());
-            }
-        );
-        switch(pollIds) {
-            case null {
-                #err("Poll doesn't exist.");
-            };
-            case (?(result)) {
-                var _proposals: [Proposal] = [];
-                let _currentPollId: ?PollId = List.find<PollId>(result, func id = id == pollId);
-                if(Option.isNull(_currentPollId)) {
-                    #err("Poll doesn't exist.");
-                } else {
-                    let _proposalIds: ?List.List<ProposalId> = Option.map<PollId,List.List<ProposalId>>(
-                        _currentPollId,
-                        func(pId) {
-                            Option.unwrap(pollProposals.get(pId));
-                        }
+                    let _poll : Poll = Option.unwrap(polls.get(id));
+                    var _pollProposals : [Proposal] = [];
+                    
+                    let proposalIds : [ProposalId] = List.toArray<ProposalId>(
+                        Option.unwrap(pollProposals.get(_poll.pollId))
                     );
-                    for(id in Iter.fromList<ProposalId>(Option.unwrap(_proposalIds))){
-                        let _proposal = proposals.get(id);
-                        _proposals := Array.append<Proposal>(_proposals,[Option.unwrap(_proposal)]);
+                    for(proposalId in Array.vals(proposalIds)) {
+                        let _proposal : Proposal = Option.unwrap(proposals.get(proposalId));
+                        _pollProposals := Array.append<Proposal>(_pollProposals,[_proposal]);
                     };
-                    #ok(_proposals);
-                }
-            };
+                    let _pollExtended : PollExtended = {
+                        pollId=_poll.pollId;
+                        coproId=_poll.coproId;
+                        ownerId=_poll.ownerId;
+                        description=_poll.description;
+                        voters=TrieSet.toArray(_poll.voters);
+                        proposals=_pollProposals;
+                    };
+                    myPollsExtended := Array.append<PollExtended>(myPollsExtended,[_pollExtended]);
+                };
+                myPollsExtended
+            }
         };
     };
 
@@ -239,7 +205,9 @@ actor Belisama {
             };
             case (?(proposal)) {
                 let poll: Poll = Option.unwrap(polls.get(proposal.pollId));
-                let alreadyVoted : Bool = Option.isSome(Array.find<Principal>(TrieSet.toArray(poll.voters), func uid = uid == caller));
+                let alreadyVoted : Bool = Option.isSome(
+                    Array.find<Principal>(TrieSet.toArray(poll.voters), func uid = uid == caller)
+                );
                 if(alreadyVoted) {
                     #err("You already voted on this poll.");
                 } else {
