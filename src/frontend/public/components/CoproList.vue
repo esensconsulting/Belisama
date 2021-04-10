@@ -6,7 +6,12 @@
       </v-list-item-content>
 
       <v-list-item-icon>
-        <v-btn elevation="2" outlined color="pink" v-on:click="joinCopro(copro)"
+        <v-btn
+          elevation="2"
+          outlined
+          color="pink"
+          :loading="loading"
+          v-on:click="joinCopro(copro)"
           >Join</v-btn
         >
       </v-list-item-icon>
@@ -23,6 +28,7 @@ export default {
   data: () => {
     return {
       copros: [],
+      loading: false,
     };
   },
   created() {
@@ -30,8 +36,10 @@ export default {
   },
   methods: {
     joinCopro: function(copro) {
+      this.loading = true;
       console.log(copro);
       belisama.joinCopro(copro.coproId).then((data) => {
+        this.loading = false;
         if (data != "not found") this.$router.push({ path: "home/main" });
       });
     },

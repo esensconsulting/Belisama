@@ -57,7 +57,6 @@
 </template>
 
 <script>
-import frontend from "ic:canisters/frontend";
 import belisama from "ic:canisters/belisama";
 import FakeFinance from "../components/FakeFinance.vue";
 import FakeDonation from "../components/FakeDonation.vue";

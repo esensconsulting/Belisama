@@ -56,7 +56,6 @@
 </template>
 
 <script>
-import frontend from "ic:canisters/frontend";
 import belisama from "ic:canisters/belisama";
 import FakeMembers from "../components/FakeMembers.vue";
 import FakeNews from "../components/FakeNews.vue";
