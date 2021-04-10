@@ -12,41 +12,42 @@
     <v-row>
       <v-col cols="12" md="12">
         <v-card elevation="0" class="mx-auto mt-10 text-center">
-          <h1>Welcome to Belisama for {{ this.copro.address }}</h1>
+          <h1>
+            Managing the finances of the condominium
+          </h1>
           <v-container>
             <h3>
-              you will find here all the information of the Condominium
+              you will find here all the information of the Condominium finances
             </h3>
-          </v-container>
-        </v-card>
-      </v-col>
-      <v-col cols="12" md="6">
-        <v-card elevation="1" outlined shaped class="mx-auto">
-          <v-card-title class="bottom-border"
-            >Members of condominium</v-card-title
-          >
-          <v-container>
-            <v-card-text><FakeMembers /> </v-card-text>
-          </v-container>
-        </v-card>
-      </v-col>
-      <v-col cols="12" md="6">
-        <v-card elevation="1" outlined shaped class="mx-auto">
-          <v-card-title class="bottom-border">News</v-card-title>
-          <v-container>
-            <FakeNews />
           </v-container>
         </v-card>
       </v-col>
       <v-col cols="12" md="12">
         <v-card elevation="1" outlined shaped class="mx-auto">
-          <v-card-title class="bottom-border"
-            >Participate in the life of the community</v-card-title
-          >
+          <v-card-title class="bottom-border">Community money</v-card-title>
+          <FakeFinance />
+        </v-card>
+      </v-col>
+      <v-col cols="12" md="6">
+        <v-card elevation="1" outlined shaped class="mx-auto">
+          <v-card-title class="bottom-border">Money donation</v-card-title>
+          <v-container>
+            <FakeDonation />
+          </v-container>
+        </v-card>
+      </v-col>
+      <v-col cols="12" md="6">
+        <v-card elevation="1" outlined shaped class="mx-auto">
+          <v-card-title class="bottom-border">why donated money ?</v-card-title>
           <v-container>
             <v-card-text
-              >You can vote and propose votes from this application in order to
-              improve the quality of life of the condominium</v-card-text
+              >We carry out regular fundraising in order to improve our living
+              environment. With this money we carry out various renovation
+              works.</v-card-text
+            >
+            <v-card-text
+              >If you have projects do not hesitate to propose a vote, any
+              initiative is welcome</v-card-text
             >
           </v-container>
         </v-card>
@@ -58,13 +59,13 @@
 <script>
 import frontend from "ic:canisters/frontend";
 import belisama from "ic:canisters/belisama";
-import FakeMembers from "../components/FakeMembers.vue";
-import FakeNews from "../components/FakeNews.vue";
+import FakeFinance from "../components/FakeFinance.vue";
+import FakeDonation from "../components/FakeDonation.vue";
 
 export default {
   components: {
-    FakeMembers,
-    FakeNews,
+    FakeFinance,
+    FakeDonation,
   },
   data: () => {
     return {

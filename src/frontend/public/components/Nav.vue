@@ -34,7 +34,8 @@ export default {
     return {
       items: [
         { title: "Home", icon: "mdi-home", link: "/home/main" },
-        { title: "Copro", icon: "mdi-account-edit", link: "/home/main" },
+        { title: "Decision making", icon: "mdi-vote", link: "/home/main" },
+        { title: "Finance", icon: "mdi-cash", link: "/home/finance" },
       ],
     };
   },
