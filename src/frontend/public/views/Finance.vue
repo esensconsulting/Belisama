@@ -38,7 +38,7 @@
       </v-col>
       <v-col cols="12" md="6">
         <v-card elevation="1" outlined shaped class="mx-auto">
-          <v-card-title class="bottom-border">why donated money ?</v-card-title>
+          <v-card-title class="bottom-border">why donate money ?</v-card-title>
           <v-container>
             <v-card-text
               >We carry out regular fundraising in order to improve our living
@@ -46,7 +46,7 @@
               works.</v-card-text
             >
             <v-card-text
-              >If you have projects do not hesitate to propose a vote, any
+              >If you have ideas to gather people do not hesitate to propose a vote, any
               initiative is welcome</v-card-text
             >
           </v-container>

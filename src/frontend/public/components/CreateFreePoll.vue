@@ -38,7 +38,7 @@
             color="pink"
             v-on:click="CreatePoll"
           >
-            Submite Proposal
+            Submit Proposal
           </v-btn>
         </v-col>
       </v-row>

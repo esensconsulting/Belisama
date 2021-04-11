@@ -2,7 +2,7 @@
   <v-form ref="form" v-model="valid" lazy-validation>
     <v-container>
       <v-row>
-        <v-col cols="12" md="10">
+        <v-col cols="12" md="9">
           <v-text-field
             v-model="proposal"
             :counter="255"
@@ -19,7 +19,7 @@
             v-on:click="CreatePoll"
             color="pink"
           >
-            Submite Proposal
+            Submit Proposal
           </v-btn>
         </v-col>
       </v-row>
