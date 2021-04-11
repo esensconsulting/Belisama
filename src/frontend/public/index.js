@@ -22,6 +22,9 @@ const App = require("./App.vue").default;
 const Home = require("./views/Home.vue").default;
 const Info = require("./views/Information.vue").default;
 const Welcome = require("./views/Welcome.vue").default;
+const Finance = require("./views/Finance.vue").default;
+const Poll = require("./views/Poll.vue").default;
+
 const router = new Router({
   routes: [
     {
@@ -30,10 +33,16 @@ const router = new Router({
       component: Home,
       children: [
         {
-          // `UserProfile` va être rendu à l'intérieur du `<router-view>` de `User`
-          // quand `/utilisateur/:id/profil` concorde
           path: "main",
           component: Info,
+        },
+        {
+          path: "finance",
+          component: Finance,
+        },
+        {
+          path: "vote",
+          component: Poll,
         },
       ],
     },

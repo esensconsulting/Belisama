@@ -12,7 +12,6 @@
 </template>
 
 <script>
-import frontend from "ic:canisters/frontend";
 import belisama from "ic:canisters/belisama";
 import Nav from "../components/Nav.vue";
 import Header from "../components/Header.vue";
@@ -38,13 +37,6 @@ export default {
       if (data.length == 0) {
         this.$router.push({ path: "/" });
       }
-    });
-    frontend.retrieve("logo-belisama.png").then((bytes) => {
-      this.logoImgSrc = URL.createObjectURL(
-        new Blob([new Uint8Array(bytes)], {
-          type: "image/png",
-        })
-      );
     });
     belisama.callerPrincipal().then((principal) => {
       this.principal = principal;

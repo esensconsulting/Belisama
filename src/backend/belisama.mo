@@ -14,6 +14,7 @@ import Debug "mo:base/Debug";
 import Iter "mo:base/Iter";
 import TrieSet "mo:base/TrieSet";
 import Bool "mo:base/Bool";
+import Text "mo:base/Text";
 
 actor Belisama {
     public type CoproId = CoproModule.CoproId;
@@ -127,7 +128,7 @@ actor Belisama {
                     coproId = copro.coproId;
                     ownerId = caller;
                     description = poll.description;
-                    voters=TrieSet.empty<Principal>();
+                    voters=TrieSet.empty<Text>();
                 });
                 pollProposals.put(id, List.nil<ProposalId>());
 
@@ -206,7 +207,7 @@ actor Belisama {
             case (?(proposal)) {
                 let poll: Poll = Option.unwrap(polls.get(proposal.pollId));
                 let alreadyVoted : Bool = Option.isSome(
-                    Array.find<Principal>(TrieSet.toArray(poll.voters), func uid = uid == caller)
+                    Array.find<Text>(TrieSet.toArray(poll.voters), func uid = uid == Principal.toText(caller))
                 );
                 if(alreadyVoted) {
                     #err("You already voted on this poll.");
@@ -221,7 +222,12 @@ actor Belisama {
                     };
                     proposals.put(proposalId, updatedProposal);
 
-                    let newPollVoters : TrieSet.Set<Principal> = TrieSet.put<Principal>(poll.voters, caller, Principal.hash(caller), Principal.equal);
+                    let newPollVoters : TrieSet.Set<Text> = TrieSet.put<Text>(
+                        poll.voters, 
+                        Principal.toText(caller), 
+                        Text.hash(Principal.toText(caller)), 
+                        Text.equal
+                    );
                     let updatedPoll : Poll = {
                         pollId=poll.pollId;
                         coproId=poll.coproId;

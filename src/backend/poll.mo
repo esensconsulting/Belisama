@@ -19,14 +19,14 @@ module {
         coproId: CoproId;
         ownerId: Principal;
         description: Text;
-        voters: TrieSet.Set<Principal>;
+        voters: TrieSet.Set<Text>;
     };
     public type PollExtended = {
         pollId: PollId;
         coproId: CoproId;
         ownerId: Principal;
         description: Text;
-        voters: [Principal];
+        voters: [Text];
         proposals: [Proposal];
     };
     public type CreatePollDto = {
