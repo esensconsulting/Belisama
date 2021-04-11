@@ -7,15 +7,15 @@
 
       <v-list-item-icon
         v-for="(proposal, pindex) in pool.proposals"
-        :key="pindex"
+        :key="index + '/' + pindex"
       >
         <v-btn
           :disabled="alreadyvoted(pool)"
           elevation="2"
           outlined
-          :loading="loading"
+          :loading="loading && indexClicked === index + '/' + pindex"
           color="pink"
-          v-on:click="vote(proposal)"
+          v-on:click="vote(proposal, index + '/' + pindex)"
           >{{ proposal.description }}({{ proposal.voteCount }})</v-btn
         >
       </v-list-item-icon>
@@ -28,20 +28,31 @@ import belisama from "ic:canisters/belisama";
 
 export default {
   components: {},
+  props: ["event"],
   data: () => {
     return {
       pools: [],
       principal: "",
       loading: false,
+      indexClicked: undefined,
     };
   },
   created() {
     this.getPolls();
   },
+  watch: {
+    event: function(value) {
+      console.log("parent event");
+      console.log(value);
+      this.getPolls();
+    },
+  },
   methods: {
-    vote: function(proposal) {
+    vote: function(proposal, index) {
+      this.indexClicked = index;
       this.loading = true;
       belisama.vote(proposal.proposalId).then((data) => {
+        console.log(data);
         this.getPolls();
       });
     },

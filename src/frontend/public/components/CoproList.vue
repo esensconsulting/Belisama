@@ -10,8 +10,8 @@
           elevation="2"
           outlined
           color="pink"
-          :loading="loading"
-          v-on:click="joinCopro(copro)"
+          :loading="loading && indexClicked === index"
+          v-on:click="joinCopro(copro, index)"
           >Join</v-btn
         >
       </v-list-item-icon>
@@ -20,7 +20,6 @@
 </template>
 
 <script>
-import frontend from "ic:canisters/frontend";
 import belisama from "ic:canisters/belisama";
 
 export default {
@@ -29,13 +28,15 @@ export default {
     return {
       copros: [],
       loading: false,
+      indexClicked: undefined,
     };
   },
   created() {
     belisama.getAllCopros().then((data) => (this.copros = data));
   },
   methods: {
-    joinCopro: function(copro) {
+    joinCopro: function(copro, index) {
+      this.indexClicked = index;
       this.loading = true;
       console.log(copro);
       belisama.joinCopro(copro.coproId).then((data) => {
