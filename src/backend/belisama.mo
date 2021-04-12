@@ -215,7 +215,7 @@ actor Belisama {
                     let newProposalVoters : TrieSet.Set<Principal> = TrieSet.put<Principal>(proposal.voters, caller, Principal.hash(caller), Principal.equal);
                     let updatedProposal : Proposal = {
                         proposalId=proposal.proposalId;
-                        pollId=proposal.proposalId;
+                        pollId=proposal.pollId;
                         description=proposal.description;
                         voteCount=TrieSet.size(newProposalVoters);
                         voters=newProposalVoters;
