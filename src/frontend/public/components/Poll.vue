@@ -1,21 +1,23 @@
 <template>
   <div>
-    <v-list-item v-for="(pool, index) in pools" :key="index">
+    <v-list-item v-for="pool in pools" :key="pool.pollId.toString()">
       <v-list-item-content>
         <v-list-item-title v-text="pool.description"></v-list-item-title>
       </v-list-item-content>
 
       <v-list-item-icon
-        v-for="(proposal, pindex) in pool.proposals"
-        :key="index + '/' + pindex"
+        v-for="proposal in pool.proposals"
+        :key="pool.pollId + '/' + proposal.proposalId"
       >
         <v-btn
           :disabled="alreadyvoted(pool)"
           elevation="2"
           outlined
-          :loading="loading && indexClicked === index + '/' + pindex"
+          :loading="
+            loading && indexClicked === pool.pollId + '/' + proposal.proposalId
+          "
           color="pink"
-          v-on:click="vote(proposal, index + '/' + pindex)"
+          v-on:click="vote(proposal, pool.pollId + '/' + proposal.proposalId)"
           >{{ proposal.description }}({{ proposal.voteCount }})</v-btn
         >
       </v-list-item-icon>
@@ -61,6 +63,7 @@ export default {
         this.principal = principal;
         belisama.getMyPolls().then((data) => {
           this.loading = false;
+          this.indexClicked = undefined;
           this.pools = data;
         });
       });

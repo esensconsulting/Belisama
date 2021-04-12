@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-list-item v-for="(copro, index) in copros" :key="index">
+    <v-list-item v-for="copro in copros" :key="copro.coproId.toString()">
       <v-list-item-content>
         <v-list-item-title v-text="copro.address"></v-list-item-title>
       </v-list-item-content>
@@ -10,8 +10,8 @@
           elevation="2"
           outlined
           color="pink"
-          :loading="loading && indexClicked === index"
-          v-on:click="joinCopro(copro, index)"
+          :loading="loading && indexClicked === copro.coproId.toString()"
+          v-on:click="joinCopro(copro, copro.coproId.toString())"
           >Join</v-btn
         >
       </v-list-item-icon>
